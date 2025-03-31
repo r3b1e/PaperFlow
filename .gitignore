@@ -1,3 +1,4 @@
 security_pass.py
 venv/
 .env
+__pycache__/
