@@ -144,7 +144,23 @@ def update_to_database(uid, paperid, title, author, abstract, introduction, meth
         if mydb:
             mydb.close()
 
-       
+
+def fetch_records(user_id):
+    conn = create_connection()
+    if conn is None:
+        return []  # Return an empty list if connection fails
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM paper WHERE uid = %s"
+    cursor.execute(query, (user_id,))
+    records = cursor.fetchall()
+    conn.close()
+    print(records)
+    val = 1
+    for i in records:
+                paperInfo.app(i["title"], i["author"], i["uid"], val)
+                val += 1    
+    # return records
+
 
 def send_to_database(uid, title, author, abstract, introduction, methodology, results, conclusion, reference):
     try:
@@ -252,8 +268,8 @@ def app():
             
             
         if choice == 'My previous Records':
-            for i in range(0, 5):
-                paperInfo.app(i)
+            
+            fetch_records(2)
             
         
         

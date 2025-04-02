@@ -5,7 +5,7 @@ def my_function():
     st.success("✅ Button clicked! The function has been executed successfully.")
 
 # Define custom CSS to create a div with text and button
-def app(i):
+def app(title, author, uid, i):
     
     
     st.markdown(
@@ -53,11 +53,11 @@ def app(i):
     with st.container():
         # Create div with text and button using markdown
         st.markdown(
-            """
+            f"""
             <div class="custom-container">
                 <div class="text-content">
-                    <h6>Title : Jorg Divine</h6>
-                    <h6>Author : Andrew Nafak</h6>
+                    <h6>Title : {title}</h6>
+                    <h6>Author : {author}</h6>
                     <h6>Date : 25-05-25</h6>
                 </div>
                 <div class="button-container">
