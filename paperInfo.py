@@ -1,11 +1,11 @@
 import streamlit as st
+import format
 
 # Define the function to run when the button is clicked
-def my_function():
-    st.success("✅ Button clicked! The function has been executed successfully.")
+
 
 # Define custom CSS to create a div with text and button
-def app(title, author, uid, i):
+def app(title, author, uid, i, paperContent):
     
     
     st.markdown(
@@ -69,7 +69,23 @@ def app(title, author, uid, i):
         )
 
         # Use st.button() to trigger a Python function with a unique key
-        col1, col2, col3 = st.columns([4, 1, 1])  # Column layout to align button to the right
-        with col3:
-            if st.button("Click Me", key=i):  # Add a unique key
-                my_function()
+        # col1, col2, col3 = st.columns([4, 1, 1])  # Column layout to align button to the right
+        # # col = st.columns([1])
+        # with col1:
+        # if st.button("Click Me", key=i):  # Add a unique key
+                
+        #     print(paperContent)
+        #     format.my_function(paperContent)
+            
+        if st.button("Click Me", key=i):
+    # Set the page to Create a new Paper
+             # Store the clicked paper's data
+            print('happy')
+            st.session_state.selected_paper_data = paperContent
+            st.session_state.choice = 'Create a new Paper'
+
+   
+            
+            
+            
+            

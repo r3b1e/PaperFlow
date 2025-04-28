@@ -16,6 +16,8 @@ def create_report(title, author, abstract, introduction, methodology, results, c
         topMargin=2 * cm,
         bottomMargin=2 * cm,
     )
+    
+    count = 1
 
     # Define styles
     styles = getSampleStyleSheet()
@@ -90,31 +92,35 @@ def create_report(title, author, abstract, introduction, methodology, results, c
 
     # Add introduction if not empty
     if introduction.strip():
-        content.append(Paragraph("1. Introduction", heading_style))
+        content.append(Paragraph(f"{count}. Introduction", heading_style))
         content.append(add_spacing(12, 1))
         content.append(Paragraph(introduction, justified_style))
         content.append(add_spacing(40, 1))
+        count+=1
 
     # Add methodology if not empty
     if methodology.strip():
-        content.append(Paragraph("2. Methodology", heading_style))
+        content.append(Paragraph(f"{count}. Methodology", heading_style))
         content.append(add_spacing(12, 1))
         content.append(Paragraph(methodology, justified_style))
         content.append(add_spacing(40, 1))
+        count+=1
 
     # Add results if not empty
     if results.strip():
-        content.append(Paragraph("3. Results", heading_style))
+        content.append(Paragraph(f"{count}. Results", heading_style))
         content.append(add_spacing(12, 1))
         content.append(Paragraph(results, justified_style))
         content.append(add_spacing(40, 1))
+        count+=1
 
     # Add conclusion if not empty
     if conclusion.strip():
-        content.append(Paragraph("4. Conclusion", heading_style))
+        content.append(Paragraph(f"{count}. Conclusion", heading_style))
         content.append(add_spacing(12, 1))
         content.append(Paragraph(conclusion, justified_style))
         content.append(add_spacing(40, 1))
+        count+=1
     
     # Add references if not empty
     if reference.strip():

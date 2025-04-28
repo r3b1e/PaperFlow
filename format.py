@@ -18,10 +18,20 @@ def create_connection():
     conn = database.create_connection()
     return conn
 
+def my_function(paperContent):
+    # st.success("✅ Button clicked! The function has been executed successfully.")
+    st.session_state.randomid = paperContent['paperid']
+    papers(title = paperContent['title'], author = paperContent['author'], abstract=paperContent['abstract'], introduction=paperContent['introduction'], methodology=paperContent['methodology'], results=paperContent['results'], conclusion=paperContent['conclusion'], reference=paperContent['refer'])
+    
+
+
+
 
 def generate_random():
         return random.randint(1000, 9999)
     
+
+
     
     # ----- for IEEE--------------------
 def papers(title = '', author = '', abstract='', introduction='', methodology='', results='', conclusion='', reference=''):
@@ -30,9 +40,13 @@ def papers(title = '', author = '', abstract='', introduction='', methodology=''
         
         
         st.session_state.generate = False
-            
+        
+        
             
         st.header("or")
+        if st.button("Create New"):
+            st.session_state.randomid = ''
+            st.session_state.selected_paper_data = False
         ph="Write Content"
         col1, col2 = st.columns(2)
         with col1:
@@ -480,10 +494,10 @@ def fetch_records(user_id):
     cursor.execute(query, (user_id,))
     records = cursor.fetchall()
     conn.close()
-    print(records)
+    # print(records)
     val = 1
     for i in records:
-                paperInfo.app(i["title"], i["author"], i["uid"], val)
+                paperInfo.app(i["title"], i["author"], i["uid"], val, i)
                 val += 1    
     # return records
 
@@ -528,7 +542,7 @@ def app():
     
     
     if 'randomid' not in st.session_state:
-        st.session_state.randomid = 0
+        st.session_state.randomid = ''
         
     if 'isData' not in st.session_state:
         st.session_state.isData = False
@@ -536,15 +550,28 @@ def app():
     if 'generate' not in st.session_state:
         st.session_state.generate = True
         
+    
+    
+    if 'selected_paper_data' not in st.session_state:
+        st.session_state.selected_paper_data = False
+        
+        
     username = st.session_state.username.capitalize()
     
     
     
     if not username == "":
         st.header(f":violet[{username}]") 
-        choice = st.selectbox('New Paper / Previous Paper', ['Create a new Paper', 'My previous Records', 'APSIT Report Format'])
+        
+        st.session_state.choice = st.selectbox(
+            'New Paper / Previous Paper',
+            ['Create a new Paper', 'My previous Records', 'APSIT Report Format'],
+        index=['Create a new Paper', 'My previous Records', 'APSIT Report Format'].index(st.session_state.choice) if 'choice' in st.session_state else 0,
+        )
+        
 
-        if choice == 'Create a new Paper':
+        if st.session_state.choice == 'Create a new Paper':
+            st.session_state.randomid = ''
             st.title("IEEE Format PDF Viewer")
             # Define the path to your PDF file
             pdf_path = "template.pdf" 
@@ -584,20 +611,26 @@ def app():
             
             if uploaded_file is not None:
                 st.session_state.isData = True
+                st.session_state.selected_paper_data = False
                 extract.pdf_send(uploaded_file)
                 
             if uploaded_file is None:
                 st.session_state.isData = False
             
             if not st.session_state["isData"]:
-                papers()
+                if st.session_state.selected_paper_data:
+                    my_function(st.session_state.selected_paper_data)
+                    # st.session_state.selected_paper_data = False
+                    
+                else:
+                    papers()
             
             
-        if choice == 'My previous Records':
-            
-            fetch_records(2)
+        if st.session_state.choice == 'My previous Records':
+            print(st.session_state.uid)
+            fetch_records(st.session_state.uid)
 # ----------------------apsit format ----------------------------------
-        if choice == 'APSIT Report Format':
+        if st.session_state.choice == 'APSIT Report Format':
             st.title("🎓 APSIT Report Format")
             # Define the path to your PDF file
             pdf_path = "24-25__Even_Mini project-1B report format_first 5 Pages (1).pdf" 
